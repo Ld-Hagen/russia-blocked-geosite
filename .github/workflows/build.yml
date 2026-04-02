@@ -28,6 +28,7 @@ jobs:
           echo "WIN_UPDATE=https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/update.txt" >> $GITHUB_ENV
           echo "WIN_EXTRA=https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/extra.txt" >> $GITHUB_ENV
           
+          echo "RU_WHITELIST=https://raw.githubusercontent.com/hxehex/russia-mobile-internet-whitelist/refs/heads/main/whitelist.txt"  >> $GITHUB_ENV
           
           echo "GFW=https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/refs/heads/release/gfw.txt" >> $GITHUB_ENV
           echo "GREATFIRE=https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/refs/heads/release/greatfire.txt" >> $GITHUB_ENV
@@ -65,11 +66,13 @@ jobs:
           curl -sSL $WIN_SPY | grep "0.0.0.0" | awk '{print $2}' > ./win-spy.txt
           curl -sSL $WIN_UPDATE | grep "0.0.0.0" | awk '{print $2}' > ./win-update.txt
           curl -sSL $WIN_EXTRA | grep "0.0.0.0" | awk '{print $2}' > ./win-extra.txt
+
+          curl -sSL $RU_WHITELIST > ./ru-whitelist.txt
           
           curl -sSL $GFW > ./community/data/gfw.txt
           curl -sSL $GREATFIRE > ./community/data/greatfire.txt
           
-          cp {antifilter-download,antifilter-download-community,refilter,win-spy,win-update,win-extra}.txt ./community/data/
+          cp {antifilter-download,antifilter-download-community,refilter,win-spy,win-update,win-extra,ru-whitelist}.txt ./community/data/
           for f in ./community/data/*.txt; do mv "$f" "${f//.txt/}"; done
           
           rm -rf ./additional/README.md
@@ -94,7 +97,7 @@ jobs:
       - name: Build Ru only list
         run: |
           mkdir -p ./community/data-ru
-          cp ./community/data/{category-ads-all,private,ru-available-only-inside,category-gov-ru} ./community/data-ru/
+          cp ./community/data/{category-ads-all,private,ru-available-only-inside,category-gov-ru,ru-whitelist} ./community/data-ru/
           cat ./community/data/antifilter-download-community ./community/data/refilter | sort --ignore-case -u > ./community/data-ru/ru-blocked
           
       - name: Build geosite.dat file

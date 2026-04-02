@@ -67,7 +67,7 @@ jobs:
           curl -sSL $WIN_UPDATE | grep "0.0.0.0" | awk '{print $2}' > ./win-update.txt
           curl -sSL $WIN_EXTRA | grep "0.0.0.0" | awk '{print $2}' > ./win-extra.txt
 
-          curl -sSL $RU_WHITELIST > ./ru-whitelist.txt
+          curl -sSL $RU_WHITELIST | sort --ignore-case -u > ./ru-whitelist.txt
           
           curl -sSL $GFW > ./community/data/gfw.txt
           curl -sSL $GREATFIRE > ./community/data/greatfire.txt
@@ -110,7 +110,7 @@ jobs:
         run: |
           install -Dp ./custom/publish/geosite-ru-only.dat ./publish/geosite-ru-only.dat
           install -Dp ./custom/publish/geosite.dat ./publish/geosite.dat
-          install -p {antifilter-download,antifilter-download-community,refilter,win-spy,win-update,win-extra}.txt ./publish/
+          install -p {antifilter-download,antifilter-download-community,refilter,win-spy,win-update,win-extra,ru-whitelist}.txt ./publish/
           install -p ./custom/publish/{ru-blocked,ru-blocked-all,discord,youtube,google,private,category-ads-all}.txt ./publish/
           
           (cd ./publish && sha256sum geosite.dat > geosite.dat.sha256sum)
